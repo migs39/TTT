@@ -70,9 +70,9 @@ class Game:
         self.updateGameState()
 
     def clear(self):
-        for i in self.grid:
-            for j in i:
-                j = Player.EMPTY
+        self.grid = [[Player.EMPTY, Player.EMPTY, Player.EMPTY],
+                     [Player.EMPTY, Player.EMPTY, Player.EMPTY],
+                     [Player.EMPTY, Player.EMPTY, Player.EMPTY]]
         self.gameState = GameState.OnGoing
         self.currentPlayer = self.firstPlayer
     
