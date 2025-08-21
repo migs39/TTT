@@ -37,15 +37,12 @@ class Game:
     def __init__(self, firstPlayer):
 
         if not isinstance(firstPlayer, Player):
-            raise TypeError("firstPlayer precisa ser um Cell")
+            raise TypeError("firstPlayer precisa ser um Player")
         if firstPlayer == Player.EMPTY:
             raise ValueError("firstPlayer não pode ser EMPTY")
         
-        self.grid = [[Player.EMPTY, Player.EMPTY, Player.EMPTY], 
-                     [Player.EMPTY, Player.EMPTY, Player.EMPTY],
-                     [Player.EMPTY, Player.EMPTY, Player.EMPTY]]
-        self.currentPlayer = firstPlayer
-        self.gameState = GameState.OnGoing
+        self.firstPlayer = firstPlayer
+        self.clear()
 
     def updateGameState(self):
         for player in [Player.X, Player.O]:
@@ -94,14 +91,21 @@ class Game:
     def makeMove(self, x, y):
 
         if self.gameState != GameState.OnGoing:
-            raise Exception("Game is over")
+            raise RuntimeError("Game is over")
         
         if x not in range(3) or y not in range(3) or self.grid[y][x] != Player.EMPTY:
-            raise Exception("Invalid move")
+            raise ValueError("Invalid move")
         
         self.grid[y][x] = self.currentPlayer
         self.currentPlayer = self.currentPlayer.switch()
         self.updateGameState()
+
+    def clear(self):
+        for i in self.grid:
+            for j in i:
+                j = Player.EMPTY
+        self.gameState = GameState.OnGoing
+        self.currentPlayer = self.firstPlayer
     
     def __str__(self):
         return(
