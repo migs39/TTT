@@ -15,7 +15,13 @@ def test(func):
     wrapper._is_test = True
     return wrapper
 
-@test
+def gameTest(func):
+    wrapper = test(func)
+    wrapper._is_gameTest = True
+    return wrapper
+
+
+@gameTest
 def testDraw():
     game = TTT_Game.Game(TTT_Game.Player.X)
     game.makeMove(1, 0)
@@ -30,7 +36,7 @@ def testDraw():
     
     assert game.gameState == TTT_Game.GameState.Draw
 
-@test
+@gameTest
 def testHorizontalWin():
     game = TTT_Game.Game(TTT_Game.Player.X)
     game.makeMove(0, 0)
@@ -41,7 +47,7 @@ def testHorizontalWin():
 
     assert game.gameState == TTT_Game.GameState.X_Won
 
-@test
+@gameTest
 def testVerticalWin():
     game = TTT_Game.Game(TTT_Game.Player.X)
     game.makeMove(0, 0)
@@ -52,7 +58,7 @@ def testVerticalWin():
 
     assert game.gameState == TTT_Game.GameState.X_Won
 
-@test
+@gameTest
 def testPositiveDiagonalWin():
     game = TTT_Game.Game(TTT_Game.Player.X)
     game.makeMove(2, 0)
@@ -63,7 +69,7 @@ def testPositiveDiagonalWin():
 
     assert game.gameState == TTT_Game.GameState.X_Won
 
-@test
+@gameTest
 def testNegativeDiagonalWin():
     game = TTT_Game.Game(TTT_Game.Player.X)
     game.makeMove(0, 0)
@@ -74,7 +80,7 @@ def testNegativeDiagonalWin():
 
     assert game.gameState == TTT_Game.GameState.X_Won
 
-@test
+@gameTest
 def testClearFunction():
     game = TTT_Game.Game(TTT_Game.Player.X)
     game.makeMove(0, 0)
@@ -88,7 +94,7 @@ def testClearFunction():
             assert j == TTT_Enums.Player.EMPTY
     assert game.gameState == TTT_Enums.GameState.OnGoing
 
-@test
+@gameTest
 def testInvalidMoves():
     game = TTT_Game.Game(TTT_Game.Player.X)
     try:     
@@ -117,14 +123,14 @@ def testInvalidMoves():
     else:
         assert False
 
-def runTests():
+def runTests(testAttr = '_is_test'):
 
     current_module = sys.modules[__name__]
 
 
     for name in dir(current_module):
         obj = getattr(current_module, name)
-        if callable(obj) and getattr(obj, "_is_test", False):
+        if callable(obj) and getattr(obj, testAttr, False):
             obj()
 
 if __name__ == '__main__':
