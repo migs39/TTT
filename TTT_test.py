@@ -1,12 +1,15 @@
 import TTT_Game
+import TTT_Enums
 import sys
 
 def test(func):
     def wrapper():
         try:
             func()
-        except:
+        except AssertionError:
             print(f"{func.__name__ + ' failed':35} ❌")
+        except Exception as _:
+            raise
         else:
             print(f"{func.__name__ + ' passed':35} ✅")
     wrapper._is_test = True
@@ -70,6 +73,49 @@ def testNegativeDiagonalWin():
     game.makeMove(2, 2)
 
     assert game.gameState == TTT_Game.GameState.X_Won
+
+@test
+def testClearFunction():
+    game = TTT_Game.Game(TTT_Game.Player.X)
+    game.makeMove(0, 0)
+    game.makeMove(0, 1)
+    game.makeMove(1, 1)
+    game.makeMove(0, 2)
+    game.makeMove(2, 2)
+    game.clear()
+    for i in game.grid:
+        for j in i:
+            assert j == TTT_Enums.Player.EMPTY
+    assert game.gameState == TTT_Enums.GameState.OnGoing
+
+@test
+def testInvalidMoves():
+    game = TTT_Game.Game(TTT_Game.Player.X)
+    try:     
+        game.makeMove(3, 0)
+    except Exception as e:
+        assert isinstance(e, ValueError)
+    else:
+        assert False
+    try:
+        game.makeMove(0, 0)
+        game.makeMove(0, 0)
+    except Exception as e:
+        assert isinstance(e, ValueError)
+    else:
+        assert False  
+    game.clear()
+    try:
+        game.makeMove(0, 0)
+        game.makeMove(0, 1)
+        game.makeMove(1, 1)
+        game.makeMove(0, 2)
+        game.makeMove(2, 2)
+        game.makeMove(0, 0)
+    except Exception as e:
+        assert isinstance(e, RuntimeError)
+    else:
+        assert False
 
 def runTests():
 
