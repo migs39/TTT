@@ -28,6 +28,31 @@ def testEquals():
     assert not game2 == game
     game2.makeMove(0, 0)
     assert game == game2
+    game2.currentPlayer = game2.currentPlayer.switch()
+    assert game != game2
+
+@gameTest
+def testIsEquivalent():
+    game = TTT_Game.Game(TTT_Game.Player.X)
+    game2 = TTT_Game.Game(TTT_Game.Player.X)
+
+    game.grid = [[TTT_Enums.Player.O, TTT_Enums.Player.EMPTY, TTT_Enums.Player.X],
+                 [TTT_Enums.Player.EMPTY, TTT_Enums.Player.X, TTT_Enums.Player.EMPTY],
+                 [TTT_Enums.Player.O, TTT_Enums.Player.EMPTY, TTT_Enums.Player.EMPTY]]
+    
+    game2.grid = [[TTT_Enums.Player.EMPTY, TTT_Enums.Player.EMPTY, TTT_Enums.Player.EMPTY],
+                  [TTT_Enums.Player.EMPTY, TTT_Enums.Player.EMPTY, TTT_Enums.Player.EMPTY],
+                  [TTT_Enums.Player.EMPTY, TTT_Enums.Player.EMPTY, TTT_Enums.Player.EMPTY]]
+    
+    assert not game.isEquivalent(game2)
+    assert not game2.isEquivalent(game)
+
+    game2.grid = [[TTT_Enums.Player.EMPTY, TTT_Enums.Player.EMPTY, TTT_Enums.Player.X],
+                  [TTT_Enums.Player.EMPTY, TTT_Enums.Player.X, TTT_Enums.Player.EMPTY],
+                  [TTT_Enums.Player.O, TTT_Enums.Player.EMPTY, TTT_Enums.Player.O]]
+    
+    assert game.isEquivalent(game2)
+    assert game2.isEquivalent(game)
 
 @gameTest
 def testRotate():

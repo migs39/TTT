@@ -109,6 +109,8 @@ class Game:
         return        
     
     def __eq__(self, other):
+        if self.currentPlayer != other.currentPlayer:
+            return False
         for i in range(2):
             for j in range(2):
                 if self.grid[i][j] != other.grid[i][j]:
@@ -119,11 +121,20 @@ class Game:
         games = []
         for _ in range(8):
             games.append(self.copy())
-        
-        #mirror games 4 to 7
+
         for game in games[4:8]:
             game.mirrorGrid()
-        pass
+        for i in [1, 2, 3, 5, 6, 7]:
+            games[i].rotate()
+        for i in [2, 3, 6, 7]:
+            games[i].rotate()
+        for i in [3, 7]:
+            games[i].rotate()
+        
+        return games
+    
+    def isEquivalent(self, other):
+        return other in self.getEquivalentGames()
 
 
 if __name__ == "__main__":
