@@ -84,6 +84,48 @@ class Game:
         "\n------"
         f'\n{self.grid[2][0]}|{self.grid[2][1]}|{self.grid[2][2]}\n')
 
+    def forfeit(self):
+        self.gameState = self.currentPlayer.switch().getWinState
+    
+    def copy(self):
+        a = Game(self.firstPlayer)
+        a.grid = self.grid
+        a.gameState = self.gameState
+        a.currentPlayer = self.currentPlayer
+        return a
+    
+    def mirrorGrid(self):
+        copy = self.copy()
+        self.grid = [[copy.grid[0][2], copy.grid[0][1], copy.grid[0][0]],
+                     [copy.grid[1][2], copy.grid[1][1], copy.grid[1][0]],
+                     [copy.grid[2][2], copy.grid[2][1], copy.grid[2][0]]]
+        return
+    
+    def rotate(self):
+        copy = self.copy()
+        self.grid = [[copy.grid[2][0], copy.grid[1][0], copy.grid[0][0]],
+                     [copy.grid[2][1], copy.grid[1][1], copy.grid[0][1]],
+                     [copy.grid[2][2], copy.grid[1][2], copy.grid[0][2]]]
+        return        
+    
+    def __eq__(self, other):
+        for i in range(2):
+            for j in range(2):
+                if self.grid[i][j] != other.grid[i][j]:
+                    return False
+        return True
+
+    def getEquivalentGames(self):
+        games = []
+        for _ in range(8):
+            games.append(self.copy())
+        
+        #mirror games 4 to 7
+        for game in games[4:8]:
+            game.mirrorGrid()
+        pass
+
+
 if __name__ == "__main__":
     game = Game(Player.X)
     while game.gameState == GameState.OnGoing:

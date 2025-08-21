@@ -20,6 +20,48 @@ def gameTest(func):
     wrapper._is_gameTest = True
     return wrapper
 
+@gameTest
+def testEquals():
+    game = TTT_Game.Game(TTT_Game.Player.X)
+    game.makeMove(0, 0)
+    game2 = TTT_Game.Game(TTT_Game.Player.X)
+    assert not game2 == game
+    game2.makeMove(0, 0)
+    assert game == game2
+
+@gameTest
+def testRotate():
+    game = TTT_Game.Game(TTT_Game.Player.X)
+    game.grid = [[TTT_Enums.Player.O, TTT_Enums.Player.EMPTY, TTT_Enums.Player.X],
+                 [TTT_Enums.Player.EMPTY, TTT_Enums.Player.X, TTT_Enums.Player.EMPTY],
+                 [TTT_Enums.Player.O, TTT_Enums.Player.EMPTY, TTT_Enums.Player.EMPTY]]
+    game2 = game.copy()
+    game.rotate()
+    game3 = TTT_Game.Game(TTT_Game.Player.X)
+    game3.grid = [[TTT_Enums.Player.O, TTT_Enums.Player.EMPTY, TTT_Enums.Player.O],
+                  [TTT_Enums.Player.EMPTY, TTT_Enums.Player.X, TTT_Enums.Player.EMPTY],
+                  [TTT_Enums.Player.EMPTY, TTT_Enums.Player.EMPTY, TTT_Enums.Player.X]]
+    assert game == game3
+    game.rotate()
+    game.rotate()
+    game.rotate()
+    assert game == game2
+
+@gameTest
+def testMirror():
+    game = TTT_Game.Game(TTT_Game.Player.X)
+    game.grid = [[TTT_Enums.Player.O, TTT_Enums.Player.EMPTY, TTT_Enums.Player.X],
+                 [TTT_Enums.Player.EMPTY, TTT_Enums.Player.X, TTT_Enums.Player.EMPTY],
+                 [TTT_Enums.Player.O, TTT_Enums.Player.EMPTY, TTT_Enums.Player.EMPTY]]
+    game2 = game.copy()
+    game.mirrorGrid()
+    game3 = TTT_Game.Game(TTT_Game.Player.X)
+    game3.grid = [[TTT_Enums.Player.X, TTT_Enums.Player.EMPTY, TTT_Enums.Player.O],
+                  [TTT_Enums.Player.EMPTY, TTT_Enums.Player.X, TTT_Enums.Player.EMPTY],
+                  [TTT_Enums.Player.EMPTY, TTT_Enums.Player.EMPTY, TTT_Enums.Player.O]]
+    assert game == game3
+    game.mirrorGrid()
+    assert game == game2
 
 @gameTest
 def testDraw():
