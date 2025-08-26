@@ -1,5 +1,5 @@
-from TTT_Enums import Player
-from TTT_Enums import GameState
+from .enums import Player
+from .enums import GameState
 
 
 class Game:
