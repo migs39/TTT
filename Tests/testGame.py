@@ -1,7 +1,7 @@
 import src.game as game
 import src.enums as enums
-from .testUtils import test
-from .testUtils import runTests
+from .testsTools import test
+from .testsTools import runTests
 
 @test
 def testEquals():
