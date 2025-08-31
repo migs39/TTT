@@ -172,6 +172,26 @@ def testInvalidMoves():
         assert isinstance(e, RuntimeError)
     else:
         assert False
+    return
+
+@test
+def testRepr():
+    game1 = game.Game(enums.Player.X)
+    assert repr(game1) == "EEEEEEEEE"
+    game1.makeMove(0, 0)
+    assert repr(game1) == "XEEEEEEEE"
+    game1.makeMove(1, 1)
+    assert repr(game1) == "XEEEOEEEE"
+    game1.makeMove(2, 2)
+    assert repr(game1) == "XEEEOEEEX"
+    game1.makeMove(0, 2)
+    assert repr(game1) == "XEEEOEOEX"
+    game1.makeMove(2, 0)
+    assert repr(game1) == "XEXEOEOEX"
+    game1.makeMove(1, 0)
+    assert repr(game1) == "XOXEOEOEX"
+    game1.makeMove(2, 1)
+    assert repr(game1) == "XOXEOXOEX"
 
 if __name__ == '__main__':
     runTests()

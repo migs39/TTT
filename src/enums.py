@@ -25,6 +25,13 @@ class Player(Enum):
         if self == Player.X:
             return GameState.X_Won
         return
+    
+    def __repr__(self):
+        if self == Player.X:
+            return "X"
+        if self == Player.O:
+            return "O"
+        return "E"
 
 class GameState(Enum):
     OnGoing = 0

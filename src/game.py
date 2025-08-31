@@ -13,6 +13,13 @@ class Game:
         self.firstPlayer = firstPlayer
         self.clear()
 
+    def __repr__(self):
+        output = ""
+        for i in self.grid:
+            for j in i:
+                output += repr(j)
+        return output
+
     def updateGameState(self):
         for player in [Player.X, Player.O]:
 
